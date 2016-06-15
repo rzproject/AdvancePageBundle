@@ -60,7 +60,7 @@ class SnapshotAdminController extends Controller
 
                 $snapshotManager->enableSnapshots(array($snapshot));
 
-                $result = $this->indexPage($snapshot);
+                $this->indexPage($snapshot);
 
                 //override for redirect
                 $snapshotManager->generateRedirect($page, $snapshot);
@@ -79,10 +79,16 @@ class SnapshotAdminController extends Controller
 
     protected function indexPage($snapshot) {
 
+
+        //$pageServices = array_merge($this->container->getParameter('rz.news_page.page.services'), $this->container->getParameter('rz.category_page.page.services'));
         $postHasPageManager = $this->get('rz.news_page.manager.post_has_page');
 
         try {
-            $postHasPage = $postHasPageManager->findOneByPage(array('page'=>$snapshot->getPage(), 'site'=>$snapshot->getSite()));
+            $postHasPage = $postHasPageManager->fetchNewsPage(array('page'=>$snapshot->getPage(), 'site'=>$snapshot->getSite()));
+
+            if(!$postHasPage) {
+                return null;
+            }
 
             $configManager = $this->get('rz_search.manager.config');
             $configKey = $this->container->getParameter('rz_advance_page.settings.search.config.identifier');
@@ -95,9 +101,8 @@ class SnapshotAdminController extends Controller
             $indexManager = $this->get('rz_search.manager.solr.index');
 
             if($modelProcessorService && $searchClient && $indexManager) {
-                return $indexManager->processIndexData($modelProcessorService, $searchClient, $postHasPage, $configKey);
+                $indexManager->processIndexData($modelProcessorService, $searchClient, $postHasPage, $configKey);
             }
-
         } catch(\Exception $e) {
             throw $e;
         }
