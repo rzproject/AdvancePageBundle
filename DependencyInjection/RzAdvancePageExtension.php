@@ -27,6 +27,7 @@ class RzAdvancePageExtension extends Extension
         $loader->load('processor.xml');
         $this->configureClass($config, $container);
         $this->configureSearchSettings($config['settings']['search'], $container);
+        $this->configureConsumerClass($config, $container);
 
     }
 
@@ -51,5 +52,24 @@ class RzAdvancePageExtension extends Extension
     {
         $container->setParameter('rz_advance_page.settings.search.processor.service', $config['processor']['service']);
         $container->setParameter('rz_advance_page.settings.search.config.identifier', $config['config']['identifier']);
+    }
+
+    public function configureConsumerClass($config, ContainerBuilder $container)
+    {
+        if(isset($config['consumer_class']['create_snapshots'])) {
+            $container->setParameter('rz_advance_page.consumer.create_snapshots.class', $config['consumer_class']['create_snapshots']);
+        }
+
+        if(isset($config['consumer_class']['create_snapshot'])) {
+            $container->setParameter('rz_advance_page.consumer.create_snapshot.class', $config['consumer_class']['create_snapshot']);
+        }
+
+        if(isset($config['consumer_class']['cleanup_snapshots'])) {
+            $container->setParameter('rz_advance_page.consumer.cleanup_snapshots.class', $config['consumer_class']['cleanup_snapshots']);
+        }
+
+        if(isset($config['consumer_class']['cleanup_snapshot'])) {
+            $container->setParameter('rz_advance_page.consumer.cleanup_snapshot.class', $config['consumer_class']['cleanup_snapshot']);
+        }
     }
 }

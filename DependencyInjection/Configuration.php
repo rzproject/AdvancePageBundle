@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $node = $treeBuilder->root('rz_advance_page');
         $this->addBundleSettings($node);
+        $this->addConsumerSection($node);
         return $treeBuilder;
     }
 
@@ -60,5 +61,24 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+    }
+
+     /**
+     * @param \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $node
+     */
+    private function addConsumerSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('consumer_class')
+                    ->children()
+                        ->scalarNode('create_snapshots')->end()
+                        ->scalarNode('create_snapshot')->end()
+                        ->scalarNode('cleanup_snapshots')->end()
+                        ->scalarNode('cleanup_snapshot')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
     }
 }
