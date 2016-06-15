@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="rz_advance_page.processor.model.news_page.class">Rz\AdvancePageBundle\Processor\Model\NewsPageProcessor</parameter>
+    </parameters>
+
+    <services>
+        <service id="rz_advance_page.processor.model.news_page" class="%rz_advance_page.processor.model.news_page.class%">
+            <tag name="rz_search.processor.model"/>
+
+            <call method="setPageManager">
+                <argument type="service" id="sonata.page.manager.page" />
+            </call>
+            <call method="setPostManager">
+                <argument type="service" id="sonata.news.manager.post" />
+            </call>
+            <call method="setSnapshotManager">
+                <argument type="service" id="sonata.page.manager.snapshot" />
+            </call>
+            <call method="setPostHasPageManager">
+                <argument type="service" id="rz.news_page.manager.post_has_page" />
+            </call>
+            <call method="setRouter">
+                <argument type="service" id="router" />
+            </call>
+
+
+        </service>
+    </services>
+</container>
