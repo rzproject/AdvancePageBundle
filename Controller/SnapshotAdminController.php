@@ -77,7 +77,8 @@ class SnapshotAdminController extends Controller
         ));
     }
 
-    protected function indexPage($snapshot) {
+    protected function indexPage($snapshot)
+    {
 
 
         //$pageServices = array_merge($this->container->getParameter('rz.news_page.page.services'), $this->container->getParameter('rz.category_page.page.services'));
@@ -86,7 +87,7 @@ class SnapshotAdminController extends Controller
         try {
             $postHasPage = $postHasPageManager->fetchNewsPage(array('page'=>$snapshot->getPage(), 'site'=>$snapshot->getSite()));
 
-            if(!$postHasPage) {
+            if (!$postHasPage) {
                 return null;
             }
 
@@ -100,10 +101,10 @@ class SnapshotAdminController extends Controller
             $searchClient = $this->container->has($clientName) ? $this->get($clientName) : null;
             $indexManager = $this->get('rz_search.manager.solr.index');
 
-            if($modelProcessorService && $searchClient && $indexManager) {
+            if ($modelProcessorService && $searchClient && $indexManager) {
                 $indexManager->processIndexData($modelProcessorService, $searchClient, $postHasPage, $configKey);
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
     }
