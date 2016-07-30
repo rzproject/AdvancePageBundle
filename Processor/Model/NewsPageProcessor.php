@@ -23,17 +23,20 @@ class NewsPageProcessor extends AbstractProcessor
     protected $postHasPageManager;
     protected $router;
 
-    public function fetchData($criteria = []) {}
+    public function fetchData($criteria = [])
+    {
+    }
 
-    public function fetchAllData($criteria = []) {
+    public function fetchAllData($criteria = [])
+    {
         return $this->postHasPageManager->fetchNewsPages($criteria);
     }
 
-    public function process($configKey, $entity, $options=[]) {
+    public function process($configKey, $entity, $options=[])
+    {
         $fieldMappings = $this->getConfigManager()->getFieldMapping($configKey);
         $values = [];
-        foreach($fieldMappings as $key=>$field) {
-
+        foreach ($fieldMappings as $key=>$field) {
             switch ($key) {
                 case 'id':
                     $values[$key] = sprintf('%s_%s', $configKey, $entity->getPage()->getId());
@@ -45,10 +48,10 @@ class NewsPageProcessor extends AbstractProcessor
                 case 'tags':
                     $tags = $entity->getPost()->getTags();
                     $val = [];
-                    foreach($tags as $tag) {
+                    foreach ($tags as $tag) {
                         $val[] = $tag->getName();
                     }
-                    $values[$key] = implode (' ', $val);
+                    $values[$key] = implode(' ', $val);
                     break;
                 default:
                     $getter = 'get'.ucfirst($field);
@@ -138,4 +141,3 @@ class NewsPageProcessor extends AbstractProcessor
         $this->router = $router;
     }
 }
-

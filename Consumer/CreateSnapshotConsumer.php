@@ -50,14 +50,14 @@ class CreateSnapshotConsumer extends BaseCreateSnapshotConsumer
         $this->snapshotManager->getConnection()->commit();
     }
 
-    protected function indexPage($snapshot) {
-
+    protected function indexPage($snapshot)
+    {
         $postHasPageManager = $this->container->get('rz.news_page.manager.post_has_page');
 
         try {
             $postHasPage = $postHasPageManager->fetchNewsPage(array('page'=>$snapshot->getPage(), 'site'=>$snapshot->getSite()));
 
-            if(!$postHasPage) {
+            if (!$postHasPage) {
                 return null;
             }
 
@@ -71,10 +71,10 @@ class CreateSnapshotConsumer extends BaseCreateSnapshotConsumer
             $searchClient = $this->container->has($clientName) ? $this->container->get($clientName) : null;
             $indexManager = $this->container->get('rz_search.manager.solr.index');
 
-            if($modelProcessorService && $searchClient && $indexManager) {
+            if ($modelProcessorService && $searchClient && $indexManager) {
                 $indexManager->processIndexData($modelProcessorService, $searchClient, $postHasPage, $configKey);
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
     }
